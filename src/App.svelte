@@ -1,4 +1,5 @@
 <script>
+  import './app.css';
   import * as Components from "./lib";
   export let initial = 'ColorPicker';
 
