@@ -28,6 +28,7 @@
       else console.warn(`No component named "${query}" found; available: ${names.join(', ')}`);
     }
   });
+  
   // keep the query string in sync with currentName (client only)
   $: if (typeof window !== 'undefined') {
     const params = new URLSearchParams(window.location.search);
@@ -44,6 +45,7 @@
     // replaceState so navigation history isn't polluted
     window.history.replaceState({}, '', newUrl);
   }
+
   // functions to navigate through the components
 
   function prev() {
@@ -97,7 +99,8 @@
 <style>
 
   main {
-    padding: 15px;  
+    padding: 15px; 
+    max-width: 1200px; 
   }
 
   h1 {
