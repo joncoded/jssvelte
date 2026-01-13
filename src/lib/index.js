@@ -1,0 +1,5 @@
+export { default as ColorSlider } from './ColorSlider/ColorSlider.svelte'
+export { default as ExpandingSquare } from './ExpandingSquare/ExpandingSquare.svelte'
+export { default as FontSlider } from './FontSlider/FontSlider.svelte'
+export { default as KeyEventSquare } from './KeyEventSquare/KeyEventSquare.svelte'
+export { default as Multiplier } from './Multplier/Multiplier.svelte'
