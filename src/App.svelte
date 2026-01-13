@@ -1,5 +1,6 @@
 <script>
   import './app.css';
+  import { onMount } from 'svelte';
   import * as Components from "./lib";
   export let initial = 'ColorPicker';
 
@@ -10,6 +11,39 @@
   let currentName = names.includes(initial) ? initial : (names[0] ?? initial);
   $: Current = Components[currentName];
 
+  // allow overriding via URL query ?initial=Name (safe for SSR)
+  onMount(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('initial');
+    if (!query) return;
+
+    // prefer exact match, but fall back to case-insensitive match
+    if (names.includes(query)) {
+      currentName = query;
+    } else {
+      const lower = query.toLowerCase();
+      const found = names.find(n => n.toLowerCase() === lower);
+      if (found) currentName = found;
+      else console.warn(`No component named "${query}" found; available: ${names.join(', ')}`);
+    }
+  });
+  // keep the query string in sync with currentName (client only)
+  $: if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+
+    if (currentName) {
+      params.set('initial', currentName);
+    } else {
+      params.delete('initial');
+    }
+
+    const newQs = params.toString();
+    const newUrl = window.location.pathname + (newQs ? `?${newQs}` : '') + window.location.hash;
+
+    // replaceState so navigation history isn't polluted
+    window.history.replaceState({}, '', newUrl);
+  }
   // functions to navigate through the components
 
   function prev() {
